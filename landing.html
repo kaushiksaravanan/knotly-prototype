@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knotly — Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { borderRadius: { 'xl': '14px', '2xl': '18px' } } } }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glow { box-shadow: 0 0 60px rgba(79,70,229,0.15); }
+        .fade-up { animation: fadeUp 0.6s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-white text-[#0f0f0f]">
+
+<!-- Navbar -->
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[#ebebeb]">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="font-bold text-xl"><span class="text-indigo-600">Knotly</span></div>
+        <div class="hidden md:flex items-center gap-8 text-sm text-[#525252]">
+            <a href="#features" class="hover:text-[#0f0f0f] transition-colors">Features</a>
+            <a href="#pricing" class="hover:text-[#0f0f0f] transition-colors">Pricing</a>
+            <a href="#demo" class="hover:text-[#0f0f0f] transition-colors">Demo</a>
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors">Docs</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="text-sm px-4 py-2 text-[#0f0f0f] hover:bg-[#f5f5f5] rounded-[14px] transition-colors">Log in</button>
+            <button class="bg-[#0f0f0f] hover:bg-[#404040] text-white px-5 py-2 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">Get Started Free</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
+    <div class="fade-up">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 rounded-full text-xs font-medium text-indigo-700 mb-6">
+            <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></span>
+            4x more messages than Chatbase at half the price
+        </div>
+        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 max-w-4xl mx-auto">
+            AI chatbots your customers<br><span class="gradient-text">actually trust</span>
+        </h1>
+        <p class="text-xl text-[#525252] max-w-2xl mx-auto mb-10">
+            Every answer cited. Never hallucinate. Upload your docs, embed on your site in 2 minutes. 67% more accurate than basic RAG.
+        </p>
+        <div class="flex items-center justify-center gap-4 mb-4">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985] shadow-lg shadow-indigo-200">
+                Start Free — No Credit Card
+            </button>
+            <button class="border border-[#e5e5e5] hover:border-[#0f0f0f] px-8 py-3.5 rounded-[14px] text-sm font-semibold transition-all">
+                Watch Demo (2 min)
+            </button>
+        </div>
+        <p class="text-xs text-[#a3a3a3]">Free plan includes 100 messages/mo. No card required.</p>
+    </div>
+
+    <!-- Hero Screenshot -->
+    <div class="mt-16 rounded-2xl border border-[#ebebeb] shadow-xl overflow-hidden glow">
+        <div class="bg-[#f8f8f8] px-4 py-2 border-b border-[#ebebeb] flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+            <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
+            <span class="ml-4 text-xs text-[#a3a3a3]">app.knotly.ai/dashboard</span>
+        </div>
+        <div class="bg-[#fafafa] p-8">
+            <!-- Mini dashboard preview -->
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs text-[#737373]">Messages Today</div>
+                    <div class="text-xl font-bold mt-1">1,247</div>
+                    <div class="text-[10px] text-green-600 mt-0.5">+18%</div>
+                </div>
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs text-[#737373]">Resolution Rate</div>
+                    <div class="text-xl font-bold mt-1">94%</div>
+                    <div class="text-[10px] text-green-600 mt-0.5">+5%</div>
+                </div>
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs text-[#737373]">Confidence</div>
+                    <div class="text-xl font-bold mt-1">0.91</div>
+                    <div class="text-[10px] text-[#737373] mt-0.5">avg score</div>
+                </div>
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs text-[#737373]">Cost Saved</div>
+                    <div class="text-xl font-bold mt-1">$4,230</div>
+                    <div class="text-[10px] text-green-600 mt-0.5">this month</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs font-medium text-[#737373] mb-3">Knowledge Gaps (fix these to improve)</div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center"><span class="text-xs">Do you support SAML SSO?</span><span class="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] rounded-full">Unanswered</span></div>
+                        <div class="flex justify-between items-center"><span class="text-xs">What's your uptime SLA?</span><span class="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] rounded-full">Unanswered</span></div>
+                        <div class="flex justify-between items-center"><span class="text-xs">GDPR data residency?</span><span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] rounded-full">Low confidence</span></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-[14px] p-4 shadow-sm">
+                    <div class="text-xs font-medium text-[#737373] mb-3">Live Chat Preview</div>
+                    <div class="space-y-2">
+                        <div class="bg-[#f5f5f5] rounded-xl rounded-tl-sm px-3 py-2 text-xs max-w-[80%]">How do I connect Stripe?</div>
+                        <div class="bg-indigo-600 text-white rounded-xl rounded-tr-sm px-3 py-2 text-xs max-w-[80%] ml-auto">Go to Settings → Integrations → Click "Connect Stripe" <span class="block mt-1 text-[10px] text-indigo-200">Source: Integration Guide p.12</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social proof -->
+<section class="border-y border-[#ebebeb] py-8 bg-[#fafafa]">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center text-xs text-[#a3a3a3] mb-4">Trusted by teams building better support</div>
+        <div class="flex items-center justify-center gap-12 opacity-40">
+            <span class="text-lg font-bold">Acme Corp</span>
+            <span class="text-lg font-bold">TechFlow</span>
+            <span class="text-lg font-bold">DataSync</span>
+            <span class="text-lg font-bold">CloudBase</span>
+            <span class="text-lg font-bold">ShipFast</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold mb-3">Why teams switch from Chatbase</h2>
+        <p class="text-[#737373] max-w-xl mx-auto">Better accuracy, more messages, lower price. No branding fees. Open API on all plans.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">67% More Accurate</h3>
+            <p class="text-sm text-[#737373]">Hybrid search + reranking + contextual embeddings. Every answer cited with source. Confidence scoring prevents hallucination.</p>
+        </div>
+
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">4x More Messages</h3>
+            <p class="text-sm text-[#737373]">$29/mo gets you 2,000 messages. Chatbase charges $32 for 500. No $99/mo branding fee. Transparent $0.01 overage.</p>
+        </div>
+
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">20+ File Formats</h3>
+            <p class="text-sm text-[#737373]">PDF, DOCX, XLSX, PPTX, CSV, images (OCR), audio, HTML, web crawl. Chatbase only supports 4 formats.</p>
+        </div>
+
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">Smart Escalation</h3>
+            <p class="text-sm text-[#737373]">Confidence-based routing to human agents. When the bot isn't sure, it says so and connects to your team — with full context.</p>
+        </div>
+
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">Actionable Analytics</h3>
+            <p class="text-sm text-[#737373]">See what your bot can't answer. Knowledge gap detection tells you exactly what to add. ROI calculator shows dollars saved.</p>
+        </div>
+
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0] hover:shadow-lg transition-shadow">
+            <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <h3 class="font-semibold mb-2">Developer-First</h3>
+            <p class="text-sm text-[#737373]">Free API on all plans. npm React component. Full webhook events. Bring your own LLM keys. Self-host option available.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="bg-[#fafafa] border-y border-[#ebebeb] py-20">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold mb-3">Simple, transparent pricing</h2>
+            <p class="text-[#737373]">4x more messages than Chatbase. No branding fees. No hidden costs.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <!-- Free -->
+            <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0]">
+                <div class="text-sm font-medium text-[#737373] mb-1">Free</div>
+                <div class="text-3xl font-bold mb-1">$0</div>
+                <div class="text-xs text-[#a3a3a3] mb-6">/month</div>
+                <ul class="space-y-2 text-sm text-[#525252] mb-6">
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 100 messages/mo</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 1 chatbot</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 5 MB storage</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> API access</li>
+                    <li class="flex items-center gap-2"><span class="text-[#ccc]">&#10003;</span> Knotly branding</li>
+                </ul>
+                <button class="w-full border border-[#e5e5e5] hover:border-[#0f0f0f] py-2.5 rounded-[14px] text-sm font-medium transition-all">Start Free</button>
+            </div>
+
+            <!-- Starter -->
+            <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0]">
+                <div class="text-sm font-medium text-[#737373] mb-1">Starter</div>
+                <div class="text-3xl font-bold mb-1">$29</div>
+                <div class="text-xs text-[#a3a3a3] mb-6">/month</div>
+                <ul class="space-y-2 text-sm text-[#525252] mb-6">
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> <strong>2,000</strong> messages/mo</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 3 chatbots</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 50 MB storage</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Branding removed</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Analytics</li>
+                </ul>
+                <button class="w-full border border-[#e5e5e5] hover:border-[#0f0f0f] py-2.5 rounded-[14px] text-sm font-medium transition-all">Get Started</button>
+            </div>
+
+            <!-- Pro (highlighted) -->
+            <div class="bg-white rounded-[18px] p-6 shadow-lg border-2 border-indigo-500 relative">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-600 text-white text-[10px] font-medium rounded-full">Most Popular</div>
+                <div class="text-sm font-medium text-indigo-600 mb-1">Pro</div>
+                <div class="text-3xl font-bold mb-1">$99</div>
+                <div class="text-xs text-[#a3a3a3] mb-6">/month</div>
+                <ul class="space-y-2 text-sm text-[#525252] mb-6">
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> <strong>10,000</strong> messages/mo</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Unlimited chatbots</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> 500 MB storage</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Knowledge gap detection</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Human escalation</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Multi-model choice</li>
+                </ul>
+                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">Get Started</button>
+            </div>
+
+            <!-- Business -->
+            <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#f0f0f0]">
+                <div class="text-sm font-medium text-[#737373] mb-1">Business</div>
+                <div class="text-3xl font-bold mb-1">$299</div>
+                <div class="text-xs text-[#a3a3a3] mb-6">/month</div>
+                <ul class="space-y-2 text-sm text-[#525252] mb-6">
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> <strong>50,000</strong> messages/mo</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> White-label</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> SSO / SAML</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Priority support</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Custom domain</li>
+                    <li class="flex items-center gap-2"><span class="text-green-500">&#10003;</span> Agency reseller</li>
+                </ul>
+                <button class="w-full border border-[#e5e5e5] hover:border-[#0f0f0f] py-2.5 rounded-[14px] text-sm font-medium transition-all">Contact Sales</button>
+            </div>
+        </div>
+
+        <div class="text-center mt-8 text-xs text-[#a3a3a3]">
+            All plans include: API access, hybrid search, reranking, citations, 20+ file formats, web crawling.<br>
+            Overage: $0.01/message (transparent, no surprise bills). Compare: Chatbase charges $0.04/message overage.
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="max-w-6xl mx-auto px-6 py-20 text-center">
+    <h2 class="text-3xl font-bold mb-4">Ready to build a chatbot your customers trust?</h2>
+    <p class="text-[#737373] mb-8 max-w-lg mx-auto">Upload your docs, get a working chatbot in 2 minutes. Embed on your site with one line of code.</p>
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985] shadow-lg shadow-indigo-200">
+        Start Free — Takes 2 Minutes
+    </button>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-[#ebebeb] py-12 bg-[#fafafa]">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+        <div>
+            <div class="font-bold text-lg text-indigo-600 mb-4">Knotly</div>
+            <p class="text-[#737373] text-xs">AI chatbots your customers trust. Every answer cited.</p>
+        </div>
+        <div>
+            <div class="font-medium mb-3">Product</div>
+            <div class="space-y-2 text-[#737373]">
+                <div><a href="#" class="hover:text-[#0f0f0f]">Features</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">Pricing</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">API Docs</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">Changelog</a></div>
+            </div>
+        </div>
+        <div>
+            <div class="font-medium mb-3">Compare</div>
+            <div class="space-y-2 text-[#737373]">
+                <div><a href="#" class="hover:text-[#0f0f0f]">vs Chatbase</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">vs Tidio</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">vs Botpress</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">vs CustomGPT</a></div>
+            </div>
+        </div>
+        <div>
+            <div class="font-medium mb-3">Company</div>
+            <div class="space-y-2 text-[#737373]">
+                <div><a href="#" class="hover:text-[#0f0f0f]">Blog</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">Privacy</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">Terms</a></div>
+                <div><a href="#" class="hover:text-[#0f0f0f]">Status</a></div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

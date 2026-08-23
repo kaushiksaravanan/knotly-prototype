@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knotly — Build AI Chatbots Trained on Your Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    borderRadius: { 'xl': '14px', '2xl': '18px' },
+                    colors: {
+                        'knotly': { 50: '#f0f4ff', 100: '#dbe4ff', 500: '#4f46e5', 600: '#4338ca', 700: '#3730a3' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); }
+        .fade-in { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .chat-bubble { max-width: 80%; }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-[#0f0f0f]">
+
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 glass border-b border-[#ebebeb]">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="font-bold text-xl tracking-tight">
+            <span class="text-knotly-600">Knotly</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-sm text-[#525252]">
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors" onclick="showView('dashboard')">Dashboard</a>
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors" onclick="showView('sources')">Sources</a>
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors" onclick="showView('playground')">Playground</a>
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors" onclick="showView('embed')">Embed</a>
+            <a href="#" class="hover:text-[#0f0f0f] transition-colors" onclick="showView('analytics')">Analytics</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-knotly-100 flex items-center justify-center text-knotly-600 font-semibold text-sm">K</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Layout -->
+<div class="flex h-[calc(100vh-64px)]">
+    <!-- Sidebar -->
+    <aside class="w-64 border-r border-[#ebebeb] bg-white p-4 hidden lg:block">
+        <div class="mb-6">
+            <button class="w-full bg-[#0f0f0f] hover:bg-[#404040] text-white px-4 py-2.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]" onclick="showModal('create')">
+                + New Chatbot
+            </button>
+        </div>
+        <div class="space-y-1">
+            <div class="text-xs font-medium text-[#a3a3a3] uppercase tracking-wider mb-2 px-3">Your Chatbots</div>
+            <div class="px-3 py-2 rounded-[10px] bg-knotly-50 text-knotly-700 text-sm font-medium cursor-pointer">
+                Support Agent
+            </div>
+            <div class="px-3 py-2 rounded-[10px] hover:bg-[#f5f5f5] text-sm text-[#525252] cursor-pointer transition-colors">
+                Sales Assistant
+            </div>
+            <div class="px-3 py-2 rounded-[10px] hover:bg-[#f5f5f5] text-sm text-[#525252] cursor-pointer transition-colors">
+                Docs Helper
+            </div>
+        </div>
+        <div class="mt-8 space-y-1">
+            <div class="text-xs font-medium text-[#a3a3a3] uppercase tracking-wider mb-2 px-3">Settings</div>
+            <div class="px-3 py-2 rounded-[10px] hover:bg-[#f5f5f5] text-sm text-[#525252] cursor-pointer transition-colors">API Keys</div>
+            <div class="px-3 py-2 rounded-[10px] hover:bg-[#f5f5f5] text-sm text-[#525252] cursor-pointer transition-colors">Team</div>
+            <div class="px-3 py-2 rounded-[10px] hover:bg-[#f5f5f5] text-sm text-[#525252] cursor-pointer transition-colors">Billing</div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="p-8 fade-in">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold mb-1">Support Agent</h1>
+                <p class="text-[#737373] text-sm">Trained on 47 documents | 1,284 conversations this month</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]">
+                    <div class="text-sm text-[#737373] mb-1">Messages Today</div>
+                    <div class="text-2xl font-bold">342</div>
+                    <div class="text-xs text-green-600 mt-1">+12% vs yesterday</div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]">
+                    <div class="text-sm text-[#737373] mb-1">Resolution Rate</div>
+                    <div class="text-2xl font-bold">89%</div>
+                    <div class="text-xs text-green-600 mt-1">+3% this week</div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]">
+                    <div class="text-sm text-[#737373] mb-1">Avg Response</div>
+                    <div class="text-2xl font-bold">1.2s</div>
+                    <div class="text-xs text-[#737373] mt-1">P95: 2.8s</div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]">
+                    <div class="text-sm text-[#737373] mb-1">Escalated</div>
+                    <div class="text-2xl font-bold">11%</div>
+                    <div class="text-xs text-[#737373] mt-1">8 today</div>
+                </div>
+            </div>
+
+            <!-- Recent Conversations -->
+            <div class="bg-white rounded-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]">
+                <div class="p-6 border-b border-[#ebebeb]">
+                    <h2 class="font-semibold">Recent Conversations</h2>
+                </div>
+                <div class="divide-y divide-[#f5f5f5]">
+                    <div class="px-6 py-4 hover:bg-[#fafafa] cursor-pointer transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">How do I reset my password?</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Resolved in 2 messages | 34s ago</div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full font-medium">Resolved</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 hover:bg-[#fafafa] cursor-pointer transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">I need help with billing, my card was charged twice</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Escalated after 4 messages | 2m ago</div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-full font-medium">Escalated</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 hover:bg-[#fafafa] cursor-pointer transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">What integrations do you support?</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Resolved in 1 message | 5m ago</div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full font-medium">Resolved</span>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 hover:bg-[#fafafa] cursor-pointer transition-colors">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-sm font-medium">Can I export my data to CSV?</div>
+                                <div class="text-xs text-[#737373] mt-0.5">In progress | 1m ago</div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded-full font-medium">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sources View -->
+        <div id="view-sources" class="p-8 fade-in hidden">
+            <div class="mb-8 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold mb-1">Training Sources</h1>
+                    <p class="text-[#737373] text-sm">47 documents | 2.3M tokens indexed</p>
+                </div>
+                <button class="bg-[#0f0f0f] hover:bg-[#404040] text-white px-5 py-2.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">
+                    + Add Source
+                </button>
+            </div>
+
+            <!-- Source Types -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border-2 border-transparent hover:border-knotly-200 cursor-pointer transition-all">
+                    <div class="text-2xl mb-3">📄</div>
+                    <div class="font-semibold text-sm">Documents</div>
+                    <div class="text-xs text-[#737373] mt-1">PDF, DOCX, TXT, MD</div>
+                    <div class="mt-3 text-xs font-medium text-knotly-600">32 files</div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border-2 border-transparent hover:border-knotly-200 cursor-pointer transition-all">
+                    <div class="text-2xl mb-3">🌐</div>
+                    <div class="font-semibold text-sm">Website Pages</div>
+                    <div class="text-xs text-[#737373] mt-1">Crawled URLs</div>
+                    <div class="mt-3 text-xs font-medium text-knotly-600">12 pages</div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border-2 border-transparent hover:border-knotly-200 cursor-pointer transition-all">
+                    <div class="text-2xl mb-3">💬</div>
+                    <div class="font-semibold text-sm">Q&A Pairs</div>
+                    <div class="text-xs text-[#737373] mt-1">Custom training data</div>
+                    <div class="mt-3 text-xs font-medium text-knotly-600">3 sets</div>
+                </div>
+            </div>
+
+            <!-- File List -->
+            <div class="bg-white rounded-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                <div class="p-6 border-b border-[#ebebeb] flex justify-between items-center">
+                    <h2 class="font-semibold">All Sources</h2>
+                    <input type="text" placeholder="Search sources..." class="px-4 py-2 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f] w-64">
+                </div>
+                <div class="divide-y divide-[#f5f5f5]">
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-xs">PDF</div>
+                            <div>
+                                <div class="text-sm font-medium">Product Documentation v2.4.pdf</div>
+                                <div class="text-xs text-[#737373]">245 chunks | Updated 2h ago</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">Indexed</span>
+                            <button class="text-[#a3a3a3] hover:text-red-500 text-sm">Remove</button>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-xs">URL</div>
+                            <div>
+                                <div class="text-sm font-medium">https://docs.yoursite.com/api</div>
+                                <div class="text-xs text-[#737373]">89 chunks | Crawled 1d ago</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">Indexed</span>
+                            <button class="text-[#a3a3a3] hover:text-red-500 text-sm">Remove</button>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center text-xs">FAQ</div>
+                            <div>
+                                <div class="text-sm font-medium">Custom Q&A — Billing Questions</div>
+                                <div class="text-xs text-[#737373]">28 pairs | Added 3d ago</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">Indexed</span>
+                            <button class="text-[#a3a3a3] hover:text-red-500 text-sm">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Playground View -->
+        <div id="view-playground" class="p-8 fade-in hidden">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold mb-1">Playground</h1>
+                <p class="text-[#737373] text-sm">Test your chatbot before deploying</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Chat Panel -->
+                <div class="bg-white rounded-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)] flex flex-col h-[600px]">
+                    <div class="p-4 border-b border-[#ebebeb]">
+                        <div class="font-semibold text-sm">Chat Preview</div>
+                    </div>
+                    <div class="flex-1 p-4 overflow-auto space-y-4" id="chat-messages">
+                        <div class="chat-bubble bg-[#f5f5f5] rounded-2xl rounded-tl-sm px-4 py-3 text-sm">
+                            Hi! I'm your support assistant. How can I help you today?
+                        </div>
+                        <div class="chat-bubble bg-knotly-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 text-sm ml-auto">
+                            How do I connect my Stripe account?
+                        </div>
+                        <div class="chat-bubble bg-[#f5f5f5] rounded-2xl rounded-tl-sm px-4 py-3 text-sm">
+                            <p>To connect your Stripe account:</p>
+                            <ol class="list-decimal ml-4 mt-2 space-y-1 text-xs">
+                                <li>Go to Settings → Integrations</li>
+                                <li>Click "Connect Stripe"</li>
+                                <li>Authorize the connection in the Stripe popup</li>
+                                <li>Your account will sync within 30 seconds</li>
+                            </ol>
+                            <div class="mt-3 text-xs text-[#737373] border-t border-[#ebebeb] pt-2">
+                                Source: Product Documentation v2.4.pdf (page 34)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-[#ebebeb]">
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Type a message..." class="flex-1 px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f]">
+                            <button class="bg-[#0f0f0f] hover:bg-[#404040] text-white px-4 py-2.5 rounded-[12px] text-sm font-semibold transition-all">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Config Panel -->
+                <div class="bg-white rounded-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)] p-6 h-[600px] overflow-auto">
+                    <h3 class="font-semibold mb-4">Configuration</h3>
+                    <div class="space-y-5">
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium">System Prompt</label>
+                            <textarea class="w-full px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f] h-24 resize-none" placeholder="You are a helpful support assistant...">You are a helpful support assistant for our SaaS product. Answer questions based only on the provided documentation. If you don't know the answer, say so honestly and offer to escalate to a human agent.</textarea>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium">Model</label>
+                            <select class="w-full px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f] bg-white">
+                                <option>GPT-4o Mini (Fast, Affordable)</option>
+                                <option>GPT-4o (Best Quality)</option>
+                                <option>Claude 3.5 Sonnet</option>
+                                <option>Claude 3 Haiku (Fastest)</option>
+                                <option>Gemini 2.0 Flash</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium">Temperature</label>
+                            <input type="range" min="0" max="100" value="20" class="w-full">
+                            <div class="flex justify-between text-xs text-[#737373]">
+                                <span>Precise (0.0)</span>
+                                <span>Creative (1.0)</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium">Retrieval Settings</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-xs text-[#737373]">Top-K Chunks</label>
+                                    <input type="number" value="5" class="w-full px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-sm mt-1">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-[#737373]">Similarity Threshold</label>
+                                    <input type="number" value="0.7" step="0.05" class="w-full px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-sm mt-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium">Features</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" checked class="rounded"> Show source citations
+                                </label>
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" checked class="rounded"> Enable hybrid search (BM25 + Semantic)
+                                </label>
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" checked class="rounded"> Reranking (Cohere)
+                                </label>
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" class="rounded"> Human escalation
+                                </label>
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" class="rounded"> Lead capture
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Embed View -->
+        <div id="view-embed" class="p-8 fade-in hidden">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold mb-1">Embed & Deploy</h1>
+                <p class="text-[#737373] text-sm">Add your chatbot to any website in seconds</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-6">
+                    <!-- Embed Options -->
+                    <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                        <h3 class="font-semibold mb-4">Embed Method</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 border-2 border-knotly-500 rounded-[12px] cursor-pointer bg-knotly-50">
+                                <div class="font-medium text-sm">Script Tag (Recommended)</div>
+                                <div class="text-xs text-[#737373] mt-0.5">One line of code. Works everywhere.</div>
+                            </div>
+                            <div class="p-3 border border-[#e5e5e5] rounded-[12px] cursor-pointer hover:border-[#0f0f0f] transition-colors">
+                                <div class="font-medium text-sm">React Component</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Full control in React/Next.js apps.</div>
+                            </div>
+                            <div class="p-3 border border-[#e5e5e5] rounded-[12px] cursor-pointer hover:border-[#0f0f0f] transition-colors">
+                                <div class="font-medium text-sm">iframe</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Universal fallback. WordPress, Webflow, etc.</div>
+                            </div>
+                            <div class="p-3 border border-[#e5e5e5] rounded-[12px] cursor-pointer hover:border-[#0f0f0f] transition-colors">
+                                <div class="font-medium text-sm">REST API</div>
+                                <div class="text-xs text-[#737373] mt-0.5">Full headless. Build your own UI.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code -->
+                    <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold">Embed Code</h3>
+                            <button class="text-xs text-knotly-600 font-medium hover:underline">Copy</button>
+                        </div>
+                        <pre class="bg-[#1a1a1a] text-green-400 p-4 rounded-[12px] text-xs overflow-x-auto"><code>&lt;script
+  src="https://cdn.knotly.ai/widget.js"
+  data-chatbot-id="cb_a7x9k2m"
+  data-theme="light"
+  data-position="bottom-right"
+  defer
+&gt;&lt;/script&gt;</code></pre>
+                    </div>
+
+                    <!-- Theming -->
+                    <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                        <h3 class="font-semibold mb-4">Appearance</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-medium text-[#737373]">Primary Color</label>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-knotly-600 border border-[#e5e5e5]"></div>
+                                    <input type="text" value="#4f46e5" class="flex-1 px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-xs">
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-medium text-[#737373]">Position</label>
+                                <select class="w-full px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-xs bg-white">
+                                    <option>Bottom Right</option>
+                                    <option>Bottom Left</option>
+                                    <option>Full Page</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-medium text-[#737373]">Theme</label>
+                                <select class="w-full px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-xs bg-white">
+                                    <option>Light</option>
+                                    <option>Dark</option>
+                                    <option>Auto (System)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-medium text-[#737373]">Border Radius</label>
+                                <select class="w-full px-3 py-2 border border-[#e5e5e5] rounded-[10px] text-xs bg-white">
+                                    <option>Rounded (16px)</option>
+                                    <option>Sharp (4px)</option>
+                                    <option>Pill (24px)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="bg-[#1a1a1a] rounded-[18px] p-6 relative h-[700px]">
+                    <div class="text-white text-xs font-medium mb-4 opacity-60">Live Preview</div>
+                    <div class="absolute bottom-6 right-6 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden">
+                        <div class="bg-knotly-600 px-4 py-3 flex items-center gap-2">
+                            <div class="w-6 h-6 bg-white/20 rounded-full"></div>
+                            <span class="text-white text-sm font-medium">Support Agent</span>
+                        </div>
+                        <div class="p-4 space-y-3 h-48 overflow-auto">
+                            <div class="bg-[#f5f5f5] rounded-xl rounded-tl-sm px-3 py-2 text-xs max-w-[85%]">
+                                Hi! How can I help you today?
+                            </div>
+                        </div>
+                        <div class="p-3 border-t border-[#ebebeb]">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="Ask a question..." class="flex-1 px-3 py-2 bg-[#f5f5f5] rounded-lg text-xs focus:outline-none">
+                                <button class="bg-knotly-600 text-white px-3 py-2 rounded-lg text-xs">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="view-analytics" class="p-8 fade-in hidden">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold mb-1">Analytics</h1>
+                <p class="text-[#737373] text-sm">Understand how your chatbot performs</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                    <h3 class="font-semibold mb-4">Top Questions (This Week)</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">How do I reset my password?</span>
+                            <span class="text-xs text-[#737373]">47 times</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">What are your pricing plans?</span>
+                            <span class="text-xs text-[#737373]">34 times</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">How to connect Stripe?</span>
+                            <span class="text-xs text-[#737373]">28 times</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">Can I export to CSV?</span>
+                            <span class="text-xs text-[#737373]">22 times</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">API rate limits?</span>
+                            <span class="text-xs text-[#737373]">19 times</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-[18px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                    <h3 class="font-semibold mb-4">Unanswered Questions</h3>
+                    <p class="text-xs text-[#737373] mb-4">Questions your bot couldn't answer — add sources to fix these</p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-red-600">Do you support SAML SSO?</span>
+                            <button class="text-xs text-knotly-600 font-medium">Add Source</button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-red-600">What's your uptime SLA?</span>
+                            <button class="text-xs text-knotly-600 font-medium">Add Source</button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-red-600">GDPR compliance details?</span>
+                            <button class="text-xs text-knotly-600 font-medium">Add Source</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Create Modal -->
+<div id="modal-create" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="hideModal('create')"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-8 fade-in">
+        <div class="flex justify-between items-start mb-6">
+            <h2 class="text-xl font-semibold">Create New Chatbot</h2>
+            <button onclick="hideModal('create')" class="text-[#737373] hover:text-black text-xl">x</button>
+        </div>
+        <div class="space-y-4">
+            <div class="space-y-1.5">
+                <label class="text-sm font-medium">Name</label>
+                <input type="text" placeholder="e.g., Support Agent" class="w-full px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f]">
+            </div>
+            <div class="space-y-1.5">
+                <label class="text-sm font-medium">Description</label>
+                <textarea placeholder="What should this chatbot do?" class="w-full px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-[#0f0f0f] h-20 resize-none"></textarea>
+            </div>
+            <button class="w-full bg-[#0f0f0f] hover:bg-[#404040] text-white px-4 py-2.5 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">
+                Create Chatbot
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function showView(view) {
+    document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+    document.getElementById('view-' + view).classList.remove('hidden');
+}
+function showModal(id) {
+    document.getElementById('modal-' + id).classList.remove('hidden');
+    document.getElementById('modal-' + id).classList.add('flex');
+}
+function hideModal(id) {
+    document.getElementById('modal-' + id).classList.add('hidden');
+    document.getElementById('modal-' + id).classList.remove('flex');
+}
+</script>
+</body>
+</html>

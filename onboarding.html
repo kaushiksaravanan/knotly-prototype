@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knotly — Create Your AI Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { borderRadius: { 'xl': '14px', '2xl': '18px' } } } }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .pulse-border { animation: pulse-ring 2s infinite; }
+        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(79,70,229,0.3); } 70% { box-shadow: 0 0 0 8px rgba(79,70,229,0); } }
+        .drag-active { border-color: #4f46e5 !important; background: #f0f4ff !important; }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-[#0f0f0f] min-h-screen">
+
+<!-- Top Bar -->
+<nav class="border-b border-[#ebebeb] bg-white/95 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+        <span class="font-bold text-lg text-indigo-600">Knotly</span>
+        <div class="flex items-center gap-4 text-sm text-[#737373]">
+            <span>Step <span id="step-num">1</span> of 4</span>
+            <div class="w-32 bg-[#f5f5f5] rounded-full h-1.5 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-1.5 rounded-full transition-all duration-500" style="width: 25%"></div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Steps Container -->
+<div class="max-w-2xl mx-auto px-6 py-12">
+
+    <!-- Step 1: Name & Purpose -->
+    <div id="step-1" class="fade-in">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-3">Create your AI chatbot</h1>
+            <p class="text-[#737373]">Train it on your docs, embed it anywhere. Takes 2 minutes.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <div class="space-y-6">
+                <div class="space-y-1.5">
+                    <label class="text-sm font-medium">Chatbot name</label>
+                    <input id="bot-name" type="text" value="Support Agent" placeholder="e.g., Support Agent, Sales Helper"
+                        class="w-full px-4 py-3 border border-[#e5e5e5] rounded-[14px] text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-sm font-medium">What should it do?</label>
+                    <textarea id="bot-purpose" placeholder="e.g., Answer customer questions about our product features, pricing, and integrations. Escalate billing issues to a human."
+                        class="w-full px-4 py-3 border border-[#e5e5e5] rounded-[14px] text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all h-24 resize-none">Answer customer questions about our product based on the documentation. If unsure, offer to connect with a human agent.</textarea>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-sm font-medium">Tone</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="tone" value="professional" checked class="peer hidden">
+                            <div class="peer-checked:border-indigo-500 peer-checked:bg-indigo-50 border-2 border-[#e5e5e5] rounded-[12px] p-3 text-center transition-all hover:border-[#ccc]">
+                                <div class="text-lg mb-1">💼</div>
+                                <div class="text-xs font-medium">Professional</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="tone" value="friendly" class="peer hidden">
+                            <div class="peer-checked:border-indigo-500 peer-checked:bg-indigo-50 border-2 border-[#e5e5e5] rounded-[12px] p-3 text-center transition-all hover:border-[#ccc]">
+                                <div class="text-lg mb-1">😊</div>
+                                <div class="text-xs font-medium">Friendly</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="tone" value="concise" class="peer hidden">
+                            <div class="peer-checked:border-indigo-500 peer-checked:bg-indigo-50 border-2 border-[#e5e5e5] rounded-[12px] p-3 text-center transition-all hover:border-[#ccc]">
+                                <div class="text-lg mb-1">⚡</div>
+                                <div class="text-xs font-medium">Concise</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button onclick="goToStep(2)" class="bg-[#0f0f0f] hover:bg-[#404040] text-white px-8 py-3 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 2: Add Sources -->
+    <div id="step-2" class="hidden fade-in">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-3">Add your knowledge</h1>
+            <p class="text-[#737373]">Upload docs, paste a URL, or add Q&A pairs. Your bot learns from these.</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- File Upload -->
+            <div id="drop-zone" class="bg-white rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-2 border-dashed border-[#e5e5e5] text-center cursor-pointer hover:border-indigo-300 transition-all"
+                ondragover="event.preventDefault(); this.classList.add('drag-active')"
+                ondragleave="this.classList.remove('drag-active')"
+                ondrop="event.preventDefault(); this.classList.remove('drag-active'); handleFiles()">
+                <div class="text-4xl mb-3">📄</div>
+                <div class="font-semibold text-sm mb-1">Drop files here or click to upload</div>
+                <div class="text-xs text-[#737373]">PDF, DOCX, TXT, XLSX, PPTX, CSV, HTML, MD — up to 50MB</div>
+                <input type="file" multiple class="hidden" id="file-input">
+            </div>
+
+            <!-- URL Crawl -->
+            <div class="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="text-2xl">🌐</div>
+                    <div>
+                        <div class="font-semibold text-sm">Crawl a website</div>
+                        <div class="text-xs text-[#737373]">We'll extract all pages from your docs site</div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <input type="url" placeholder="https://docs.yoursite.com" class="flex-1 px-4 py-2.5 border border-[#e5e5e5] rounded-[12px] text-sm focus:outline-none focus:border-indigo-500">
+                    <button onclick="startCrawl()" class="px-5 py-2.5 bg-[#f5f5f5] hover:bg-[#ebebeb] rounded-[12px] text-sm font-medium transition-colors">
+                        Crawl
+                    </button>
+                </div>
+            </div>
+
+            <!-- Added Sources List -->
+            <div id="sources-list" class="space-y-2">
+                <!-- Demo pre-added sources -->
+                <div class="bg-white rounded-[14px] px-5 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-xs font-medium text-red-600">PDF</div>
+                        <div>
+                            <div class="text-sm font-medium">Product Documentation.pdf</div>
+                            <div class="text-xs text-[#737373]">2.4 MB • 89 pages</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-green-50 text-green-700 text-[10px] rounded-full font-medium">Ready</span>
+                        <button class="text-[#ccc] hover:text-red-500 transition-colors">✕</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-[14px] px-5 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-xs font-medium text-blue-600">URL</div>
+                        <div>
+                            <div class="text-sm font-medium">https://docs.example.com</div>
+                            <div class="text-xs text-[#737373]">47 pages found</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-green-50 text-green-700 text-[10px] rounded-full font-medium">Ready</span>
+                        <button class="text-[#ccc] hover:text-red-500 transition-colors">✕</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <button onclick="goToStep(1)" class="text-sm text-[#737373] hover:text-[#0f0f0f] transition-colors">← Back</button>
+            <button onclick="goToStep(3)" class="bg-[#0f0f0f] hover:bg-[#404040] text-white px-8 py-3 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">
+                Train chatbot
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 3: Training -->
+    <div id="step-3" class="hidden fade-in">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-3">Training your chatbot...</h1>
+            <p class="text-[#737373]">This takes about 30 seconds. We're chunking, embedding, and indexing your content.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <span class="text-sm">Parsing documents (136 pages processed)</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <span class="text-sm">Chunking content (482 chunks created)</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="embed-status" class="w-6 h-6 border-2 border-indigo-500 rounded-full flex items-center justify-center animate-spin">
+                        <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                    </div>
+                    <span class="text-sm" id="embed-text">Embedding with Voyage-3 (342 / 482)...</span>
+                </div>
+                <div class="flex items-center gap-3 opacity-40">
+                    <div class="w-6 h-6 border-2 border-[#e5e5e5] rounded-full"></div>
+                    <span class="text-sm">Indexing in vector store</span>
+                </div>
+
+                <!-- Progress -->
+                <div class="mt-4">
+                    <div class="w-full bg-[#f5f5f5] rounded-full h-2 overflow-hidden">
+                        <div id="train-progress" class="bg-indigo-600 h-2 rounded-full transition-all duration-1000" style="width: 65%"></div>
+                    </div>
+                    <div class="text-xs text-[#737373] mt-2 text-center">~12 seconds remaining</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto-advance after 3s -->
+        <script>
+            setTimeout(() => {
+                if (!document.getElementById('step-3').classList.contains('hidden')) {
+                    document.getElementById('train-progress').style.width = '100%';
+                    setTimeout(() => goToStep(4), 1500);
+                }
+            }, 3000);
+        </script>
+    </div>
+
+    <!-- Step 4: Deploy -->
+    <div id="step-4" class="hidden fade-in">
+        <div class="text-center mb-10">
+            <div class="text-5xl mb-4">🎉</div>
+            <h1 class="text-3xl font-bold mb-3">Your chatbot is ready!</h1>
+            <p class="text-[#737373]">Trained on 136 pages, 482 chunks indexed. Add this to your website:</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <!-- Embed Code -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <label class="text-sm font-medium">Embed code</label>
+                    <button onclick="copyCode()" class="text-xs text-indigo-600 font-medium hover:underline">Copy to clipboard</button>
+                </div>
+                <pre class="bg-[#1a1a1a] text-green-400 p-4 rounded-[14px] text-xs overflow-x-auto"><code>&lt;script
+  src="https://cdn.knotly.ai/widget.js"
+  data-bot-id="bot_7xK9mR2p"
+  data-theme="light"
+  data-color="#4f46e5"
+  data-position="bottom-right"
+  async defer
+&gt;&lt;/script&gt;</code></pre>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-2 gap-3">
+                <button class="p-4 border border-[#e5e5e5] rounded-[14px] hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left">
+                    <div class="text-lg mb-1">💬</div>
+                    <div class="text-sm font-medium">Test it now</div>
+                    <div class="text-xs text-[#737373]">Try the playground</div>
+                </button>
+                <button class="p-4 border border-[#e5e5e5] rounded-[14px] hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left">
+                    <div class="text-lg mb-1">🎨</div>
+                    <div class="text-sm font-medium">Customize look</div>
+                    <div class="text-xs text-[#737373]">Colors, position, branding</div>
+                </button>
+                <button class="p-4 border border-[#e5e5e5] rounded-[14px] hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left">
+                    <div class="text-lg mb-1">📊</div>
+                    <div class="text-sm font-medium">View analytics</div>
+                    <div class="text-xs text-[#737373]">See conversations live</div>
+                </button>
+                <button class="p-4 border border-[#e5e5e5] rounded-[14px] hover:border-indigo-300 hover:bg-indigo-50 transition-all text-left">
+                    <div class="text-lg mb-1">📄</div>
+                    <div class="text-sm font-medium">Add more sources</div>
+                    <div class="text-xs text-[#737373]">Train on more content</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-center">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-[14px] text-sm font-semibold transition-all active:scale-[0.985]">
+                Go to Dashboard →
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function goToStep(n) {
+    document.querySelectorAll('[id^="step-"]').forEach(el => el.classList.add('hidden'));
+    document.getElementById('step-' + n).classList.remove('hidden');
+    document.getElementById('step-num').textContent = n;
+    document.getElementById('progress-bar').style.width = (n * 25) + '%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleFiles() {
+    // Simulate file upload
+    const list = document.getElementById('sources-list');
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-[14px] px-5 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] flex items-center justify-between fade-in';
+    div.innerHTML = `
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center text-xs font-medium text-purple-600">DOC</div>
+            <div>
+                <div class="text-sm font-medium">API Reference.docx</div>
+                <div class="text-xs text-[#737373]">1.1 MB • 34 pages</div>
+            </div>
+        </div>
+        <span class="px-2 py-0.5 bg-green-50 text-green-700 text-[10px] rounded-full font-medium">Ready</span>`;
+    list.appendChild(div);
+}
+
+function startCrawl() {
+    // Simulate crawl discovery
+    const list = document.getElementById('sources-list');
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-[14px] px-5 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] flex items-center justify-between fade-in';
+    div.innerHTML = `
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                <div class="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <div>
+                <div class="text-sm font-medium">Crawling...</div>
+                <div class="text-xs text-[#737373]">Discovering pages</div>
+            </div>
+        </div>`;
+    list.appendChild(div);
+}
+
+function copyCode() {
+    navigator.clipboard.writeText(`<script src="https://cdn.knotly.ai/widget.js" data-bot-id="bot_7xK9mR2p" data-theme="light" data-color="#4f46e5" data-position="bottom-right" async defer><\/script>`);
+}
+
+document.getElementById('drop-zone').addEventListener('click', () => {
+    document.getElementById('file-input').click();
+});
+document.getElementById('file-input').addEventListener('change', handleFiles);
+</script>
+</body>
+</html>
